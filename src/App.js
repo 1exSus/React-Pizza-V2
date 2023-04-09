@@ -13,7 +13,7 @@ function App() {
         <Header />
         <div className="content">
           <div className="container">
-            <div className="content__top">
+            <div>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/cart" element={<Cart />} />
