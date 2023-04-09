@@ -8,24 +8,30 @@ import React from 'react';
 function Home() {
   let [items, setItems] = React.useState([]);
   let [isLoading, setLoading] = React.useState(true);
+  let [categoriId, setcategoriId] = React.useState(0);
+  let [SortType, setSortType] = React.useState({ name: 'популярности', sortProparty: 'rating' });
 
-  React.useEffect(
-    () =>
-      fetch('https://642c65c0208dfe25472f2d66.mockapi.io/items')
-        .then((res) => res.json())
-        .then((res) => {
-          setItems(res);
-          setLoading(false);
-        }),
+  React.useEffect(() => {
+    setLoading(true);
+    const category = categoriId > 0 ? categoriId : '';
+    const sortBy = SortType.sortProparty.split('-', '');
+    const orderBy = SortType.sortProparty.replace('-') ? 'desc' : 'asc';
 
-    [],
-  );
+    fetch(
+      `https://642c65c0208dfe25472f2d66.mockapi.io/items?category=${category}&sortBy=${sortBy}&orderBy=${orderBy}`,
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setItems(res);
+        setLoading(false);
+      });
+  }, [categoriId, SortType]);
 
   return (
     <div>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories value={categoriId} onClickCategory={(id) => setcategoriId(id)} />
+        <Sort value={SortType} onClickSort={(obj) => setSortType(obj)} />
       </div>
 
       <h2 className="content__title">Все пиццы</h2>
