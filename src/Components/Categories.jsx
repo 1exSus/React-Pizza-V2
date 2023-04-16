@@ -8,7 +8,7 @@ function Categories(props) {
         {categories.map((value, i) => (
           <li
             key={i}
-            onClick={() => props.onClickCategory(i)}
+            onClick={() => props.onChangeCategory(i)}
             className={props.value === i ? 'active' : ''}>
             {value}
           </li>

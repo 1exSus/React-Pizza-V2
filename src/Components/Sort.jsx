@@ -1,6 +1,13 @@
 import React from 'react';
-function Sort(props) {
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setSort } from '../redux/slices/filterSlice';
+
+const Sort = (props) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const sortProparty = useSelector((state) => state.filter.sortProparty);
+  const sort = useSelector((state) => state.filter.sort);
 
   const list = [
     { name: 'популярности(ASC)', sortProparty: 'rating' },
@@ -12,7 +19,7 @@ function Sort(props) {
   ];
 
   const onClickListItem = (obj) => {
-    props.onClickSort(obj);
+    dispatch(setSort(obj));
     setOpen(!open);
   };
   return (
@@ -32,10 +39,10 @@ function Sort(props) {
         <b>Сортировка по:</b>
         <span
           onClick={() => {
-            onClickListItem(props.value);
+            // onClickListItem(props.value);
             setOpen(!open);
           }}>
-          {props.value.name}
+          {sort.name}
         </span>
       </div>
       {open && (
@@ -45,7 +52,7 @@ function Sort(props) {
               <li
                 onClick={() => onClickListItem(obj)}
                 key={index}
-                className={props.value.sortProparty === obj.sortProparty ? 'active' : ''}>
+                className={sort.sortProparty === obj.sortProparty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}
@@ -54,6 +61,6 @@ function Sort(props) {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

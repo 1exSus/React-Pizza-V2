@@ -1,22 +1,29 @@
 import '../scss/app.scss';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 import Categories from '../Components/Categories';
 import Sort from '../Components/Sort';
 import PizzaBlock from '../Components/PizzaBlock/PizzaBlock';
 import Skelleton from '../Components/PizzaBlock/Skelleton';
-import React from 'react';
 import ReactPagination from '../Components/pagination/Pagination';
 import { SearchContext } from '../App';
 
-function Home() {
+const Home = () => {
+  const dispatch = useDispatch();
   const { searchValue } = React.useContext(SearchContext);
   let [items, setItems] = React.useState([]);
   let [isLoading, setLoading] = React.useState(true);
-  let [categoriId, setcategoriId] = React.useState(0);
-  let [SortType, setSortType] = React.useState({ name: 'популярности', sortProparty: 'rating' });
+  const { categoryId } = useSelector((state) => state.filter);
+  const SortType = useSelector((state) => state.filter.sort);
+
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
 
   React.useEffect(() => {
     setLoading(true);
-    const category = categoriId > 0 ? `category=${categoriId}` : '';
+    const category = categoryId > 0 ? `category=${categoryId}` : '';
     const sortBy = SortType.sortProparty.replace('-', '');
     const order = SortType.sortProparty.includes('-') ? 'desc' : 'asc';
     const search = searchValue ? `&search=${searchValue}` : '';
@@ -29,23 +36,16 @@ function Home() {
         setItems(res);
         setLoading(false);
       });
-  }, [categoriId, SortType, searchValue]);
+  }, [categoryId, SortType, searchValue]);
 
   const skeleton = [...new Array(6)].map((_, index) => <Skelleton key={index} />);
   const PizzaItems = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
-  // const PizzaItems = items
-  //   .filter((obj) => {
-  //     if (obj.title.toLowerCase().includes(props.searchValue.toLowerCase())) {
-  //       return true;
-  //     }
-  //     return false;
-  //   })
-  //   .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+
   return (
     <div>
       <div className="content__top">
-        <Categories value={categoriId} onClickCategory={(id) => setcategoriId(id)} />
-        <Sort value={SortType} onClickSort={(obj) => setSortType(obj)} />
+        <Categories value={categoryId} onChangeCategory={(id) => onChangeCategory(id)} />
+        <Sort />
       </div>
 
       <h2 className="content__title">Все пиццы</h2>
@@ -55,6 +55,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
