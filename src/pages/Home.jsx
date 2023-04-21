@@ -8,6 +8,7 @@ import PizzaBlock from '../Components/PizzaBlock/PizzaBlock';
 import Skelleton from '../Components/PizzaBlock/Skelleton';
 import ReactPagination from '../Components/pagination/Pagination';
 import { SearchContext } from '../App';
+import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -28,12 +29,12 @@ const Home = () => {
     const order = SortType.sortProparty.includes('-') ? 'desc' : 'asc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    fetch(
-      `https://642c65c0208dfe25472f2d66.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`,
-    )
-      .then((res) => res.json())
+    axios
+      .get(
+        `https://642c65c0208dfe25472f2d66.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`,
+      )
       .then((res) => {
-        setItems(res);
+        setItems(res.data);
         setLoading(false);
       });
   }, [categoryId, SortType, searchValue]);
