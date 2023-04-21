@@ -22,8 +22,23 @@ const Sort = (props) => {
     dispatch(setSort(obj));
     setOpen(!open);
   };
+  const sortRef = React.useRef();
+
+  React.useEffect(() => {
+    const handkeCkickOutside = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        console.log('click outside');
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener('click', handkeCkickOutside);
+
+    return () => document.body.removeEventListener('click', handkeCkickOutside);
+  }, []);
+
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           width="10"
