@@ -27,7 +27,6 @@ const Sort = (props) => {
   React.useEffect(() => {
     const handkeCkickOutside = (e) => {
       if (!e.composedPath().includes(sortRef.current)) {
-        console.log('click outside');
         setOpen(false);
       }
     };
@@ -54,7 +53,6 @@ const Sort = (props) => {
         <b>Сортировка по:</b>
         <span
           onClick={() => {
-            // onClickListItem(props.value);
             setOpen(!open);
           }}>
           {sort.name}
