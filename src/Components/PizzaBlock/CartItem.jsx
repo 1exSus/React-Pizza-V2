@@ -22,7 +22,9 @@ const CartItem = (props) => {
       </div>
       <div className="cart__item-info">
         <h3>{props.title}</h3>
-        <p>{props.type}, 26 см.</p>
+        <p>
+          {props.type}, {props.size} см.
+        </p>
       </div>
       <div className="cart__item-count">
         <div

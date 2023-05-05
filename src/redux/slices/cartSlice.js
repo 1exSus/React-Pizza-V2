@@ -31,6 +31,7 @@ const cartSlice = createSlice({
     },
     clearCart(state, action) {
       state.items = [];
+      state.totalPrice = 0;
     },
     addMinusItem(state, action) {
       const findItem = state.items.find((obj) => obj.id === action.payload);
