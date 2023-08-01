@@ -22,7 +22,7 @@ const Sort = (props) => {
     dispatch(setSort(obj));
     setOpen(!open);
   };
-  const sortRef = React.useRef();
+  const sortRef = React.useRef()
 
   React.useEffect(() => {
     const handkeCkickOutside = (e) => {

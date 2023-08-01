@@ -31,7 +31,7 @@ const Home = () => {
 
     axios
       .get(
-        `https://642c65c0208dfe25472f2d66.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`,
+        `https://642c65c0208dfe25472f2d66.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}${search}`,
       )
       .then((res) => {
         setItems(res.data);
@@ -57,5 +57,5 @@ const Home = () => {
     </div>
   );
 };
-
+  
 export default Home;
