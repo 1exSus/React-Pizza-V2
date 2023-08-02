@@ -6,15 +6,17 @@ import Categories from '../Components/Categories';
 import Sort from '../Components/Sort';
 import PizzaBlock from '../Components/PizzaBlock/PizzaBlock';
 import Skelleton from '../Components/PizzaBlock/Skelleton';
-import ReactPagination from '../Components/pagination/Pagination';
 import { SearchContext } from '../App';
 import axios from 'axios';
+import Pagination from "../Components/pagination/Pagination";
+
 
 const Home = () => {
   const dispatch = useDispatch();
   const { searchValue } = React.useContext(SearchContext);
   let [items, setItems] = React.useState([]);
   let [isLoading, setLoading] = React.useState(true);
+  const [currentPage, setCurrentPage] = React.useState(0)
   const { categoryId } = useSelector((state) => state.filter);
   const SortType = useSelector((state) => state.filter.sort);
 
@@ -31,13 +33,13 @@ const Home = () => {
 
     axios
       .get(
-        `https://642c65c0208dfe25472f2d66.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}${search}`,
+        `https://642c65c0208dfe25472f2d66.mockapi.io/pizza?page=${currentPage}${category}&sortBy=${sortBy}&order=${order}${search}`,
       )
       .then((res) => {
         setItems(res.data);
         setLoading(false);
       });
-  }, [categoryId, SortType, searchValue]);
+  }, [categoryId, SortType, searchValue, currentPage]);
 
   const skeleton = [...new Array(6)].map((_, index) => <Skelleton key={index} />);
   const PizzaItems = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
@@ -52,7 +54,7 @@ const Home = () => {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : PizzaItems}</div>
       <div>
-        <ReactPagination />
+        <Pagination currentPage={currentPage} onChangePage={(number) => setCurrentPage(number)} />
       </div>
     </div>
   );
